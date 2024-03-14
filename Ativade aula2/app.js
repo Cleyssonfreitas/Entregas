@@ -6,7 +6,6 @@ const PORT = 3000;
 
 const produtoManager = new ProductManager('products.json'); 
 
-// Rota para obter todos os produtos
 app.get('/products', async (req, res) => {
     try {
         const limit = req.query.limit; 
@@ -42,7 +41,7 @@ app.get('/products/:pid', async (req, res) => {
 app.get('/', (req, res) => {
     res.redirect('/products');
 });
-// Inicialize o servidor
+
 app.listen(PORT, () => {
     console.log(`Servidor iniciado em http://localhost:${PORT}`);
 });
