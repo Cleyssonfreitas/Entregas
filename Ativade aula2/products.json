@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Xiaomi Redmi",
+    "description": "celular com otima bateria",
+    "price": 2320,
+    "thumbnail": "caminho/generico/celular.jpg",
+    "code": "A2B2C2",
+    "stock": "5",
+    "id": 1
+  },
+  {
+    "title": "Controle ps5 orininal",
+    "description": "Controle sem fio",
+    "price": 320,
+    "thumbnail": "caminho/generico/controle.jpg",
+    "code": "A3B3C3",
+    "stock": "12",
+    "id": 2
+  },
+  {
+    "title": "Teclado RedDragon",
+    "description": "Teclado  Mecanico",
+    "price": 240,
+    "thumbnail": "caminho/generico/teclado.jpg",
+    "code": "A4B4C4",
+    "stock": "15",
+    "id": 3
+  }
+]

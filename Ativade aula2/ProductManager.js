@@ -1,9 +1,31 @@
+const fs = require('fs');
 class ProductManager {
-    constructor() {
+    constructor(filePath) {
+        this.path = filePath;
         this.products = [];
         this.nextId = 1;
+        this.loadProducts();
+
+    }
+    loadProducts() {
+        try {
+            const data = fs.readFileSync(this.path, 'utf8');
+            this.products = JSON.parse(data);
+            if (!Array.isArray(this.products)) {
+                this.products = [];
+            }
+        } catch (err) {
+            console.error("Erro ao carregar produtos:", err);
+        }
     }
 
+    saveProducts() {
+        try {
+            fs.writeFileSync(this.path, JSON.stringify(this.products, null, 2));
+        } catch (err) {
+            console.error("Erro ao salvar produtos:", err);
+        }
+    }
 addProduct(product) {
    if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
     console.log("por favor insira todos dados do produto");
@@ -16,27 +38,52 @@ if (this.products.some(serie=>serie.code===product.code)) {
 }
 product.id = this.nextId++;
 this.products.push(product);
+this.saveProducts();
+console.log("Produto adicionado com sucesso");
 }
-
+getProducts() {
+    return this.products;
+}
 getProductById (id) {
 const product = this.products.find(produto => produto.id === id);
 if (product) {
-    return product;} else {
+    return product;} 
+    else {
         console.error("Não encontrado");
+        return null;
     }
 }
+updateProduct(id, updatedFields) {
+    const index = this.products.findIndex(product => product.id === id);
+    if (index !== -1) {
+        this.products[index] = { ...this.products[index], ...updatedFields };
+        this.saveProducts();
+        console.log("Produto atualizado com sucesso");
+    } else {
+        console.error("Produto não encontrado");
+    }
+}
+
+
 ListaDeProdutos() {
     console.log("Lista de todos os produtos:");
     this.products.forEach(product => {
         console.log(product);
     });
 }
+deleteProduct(id) {
+    const index = this.products.findIndex(product => product.id === id);
+    if (index !== -1) {
+        this.products.splice(index, 1);
+        this.saveProducts();
+        console.log("Produto excluído com sucesso");
+    } else {
+        console.error("Produto não encontrado");
+    }
 }
+}
+const NovoProduto = new ProductManager('products.json');
 
-
-
-
-const NovoProduto = new ProductManager();
 
 NovoProduto.addProduct({
     title: "Xiaomi Redmi",
@@ -62,21 +109,7 @@ NovoProduto.addProduct({
     code : "A4B4C4",
     stock: "15",
 });
-NovoProduto.addProduct({
-    title: "Monitor Sansung",
-    description: "Monitor 24 polegadas",
-    price: 300,
-    thumbnail:"caminho/generico/monitor.jpg",
-    code : "A5B5C5",
-});
-NovoProduto.addProduct({
-    title: "Monitor Philips",
-    description: "Monitor 24 polegadas",
-    price: 250,
-    thumbnail:"caminho/generico/monitorphilips.jpg",
-    code : "A4B4C4",
-    stock: "8",
-});
 
 NovoProduto.ListaDeProdutos();
 
+module.exports = ProductManager;
